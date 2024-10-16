@@ -13,6 +13,7 @@
 
 
 from flask import Flask,  request, jsonify
+import uuid
 
 app = Flask(__name__)
 
@@ -32,20 +33,21 @@ def echo():
 def add_comments():
     comments = request.json
     comment = comments.get('comment')
-    comment_id = 0
+    comment_id = uuid.uuid4()
     if comment:
-        comment_id += 1
-        list_of_comments.append({"comment": comment, "replies": []})
+        list_of_comments.append({"Comment id": comment_id, "comment": comment, "replies": []})
         return jsonify({'message': "Your comment has been successfully added",
-                        "comment": comment})
+                        "comment": comment,
+                        "comment_id": comment_id})
 
     else:
         return jsonify({"ERROR": "Your comment has not been added"}) 
+       
     
 
 @app.route('/display_comments', methods = ["GET"])
 def get_comments():
-    return jsonify({"comments": list_of_comments}), 200
+    return jsonify[{"comments": list_of_comments}], 200
                
     
 
